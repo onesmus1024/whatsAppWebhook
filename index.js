@@ -31,7 +31,7 @@ app.get("/webhook",(req,res)=>{
 
 });
 
-app.post("/webhook",(req,res)=>{ //i want some 
+app.post("/webhook",(req,res)=>{
 
     let body_param=req.body;
 
@@ -73,6 +73,8 @@ app.post("/webhook",(req,res)=>{ //i want some
                 res.sendStatus(404);
             }
 
+    }else{
+        res.sendStatus(404);
     }
 
 });
