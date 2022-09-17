@@ -70,10 +70,12 @@ app.post("/webhook",(req,res)=>{
 
                res.sendStatus(200);
             }else{
+                console.log("missing parameter 1");
                 res.sendStatus(404);
             }
 
     }else{
+        console.log("missing parameter 2");
         res.sendStatus(404);
     }
 
