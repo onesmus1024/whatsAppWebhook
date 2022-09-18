@@ -7,9 +7,9 @@ model.compile({loss: 'meanSquaredError', optimizer: 'sgd'});
 
 
 async function trainModel() {
-    const xs = tf.tensor2d([1, 2, 3, 4], [4, 1]);
-    const ys = tf.tensor2d([1, 3, 5, 7], [4, 1]);
-    const history=await model.fit(xs, ys, {epochs: 10,callbacks:{
+    const xs = tf.tensor2d([2, 8, 10, 12], [4, 1]);
+    const ys = tf.tensor2d([12, 42, 52, 62], [4, 1]);
+    const history=await model.fit(xs, ys, {epochs: 20,callbacks:{
         onEpochEnd: async (epoch, logs) => {
             console.log(epoch,logs.loss);
             }
