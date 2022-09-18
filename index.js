@@ -2,6 +2,7 @@ const express=require("express");
 const body_parser=require("body-parser");
 const axios=require("axios");
 const bot = require("./model.js");
+const tf = require('@tensorflow/tfjs');
 require('dotenv').config();
 
 const app=express().use(body_parser.json());
@@ -12,6 +13,7 @@ const mytoken=process.env.MYTOKEN;//prasath_token
 app.listen(process.env.PORT,()=>{
     console.log("webhook is listening");
     bot.trainModel();
+    bot.model.predict(tf.tensor2d([5], [1, 1])).print();
 });
 
 //to verify the callback url from dashboard side - cloud api side
