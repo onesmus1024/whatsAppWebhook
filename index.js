@@ -62,7 +62,8 @@ app.post("/webhook",(req,res)=>{ //i want some
                     "Content-Type":"application/json"
                 }
                }).then((response)=>{
-                     console.log(response.data);
+                     let result = response.data['prediction'];
+                     result = result.toString();
                      axios({
                         method:"POST",
                         url:"https://graph.facebook.com/v13.0/"+phon_no_id+"/messages?access_token="+token,
@@ -70,7 +71,7 @@ app.post("/webhook",(req,res)=>{ //i want some
                             messaging_product:"whatsapp",
                             to:from,
                             text:{
-                                body:"ones"
+                                body:result
                             }
                         },
                         headers:{
