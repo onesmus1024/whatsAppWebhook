@@ -9,7 +9,7 @@ const app=express().use(body_parser.json());
 
 const token=process.env.TOKEN;
 const mytoken=process.env.MYTOKEN;//prasath_token
-
+// 
 app.listen(process.env.PORT,()=>{
     console.log("webhook is listening");
     bot.trainModel();
@@ -51,28 +51,45 @@ app.post("/webhook",(req,res)=>{ //i want some
                let phon_no_id=body_param.entry[0].changes[0].value.metadata.phone_number_id;
                let from = body_param.entry[0].changes[0].value.messages[0].from; 
                let msg_body = body_param.entry[0].changes[0].value.messages[0].text.body;
-               let val= parseFloat(msg_body);
-               let result=parseInt(bot.model.predict(tf.tensor2d([val], [1, 1])).dataSync());
-               result = result.toString();
+               msg_body = msg_body.toString();
+               axios({
+                method:"POST",
+                url:"http://ec2-13-245-15-229.af-south-1.compute.amazonaws.com:5000/predict",
+                data:{
+                    "question":msg_body
+                },
+                headers:{
+                    "Content-Type":"application/json"
+                }
+               }).then((response)=>{
+                     console.log(response.data);
+                     axios({
+                        method:"POST",
+                        url:"https://graph.facebook.com/v13.0/"+phon_no_id+"/messages?access_token="+token,
+                        data:{
+                            messaging_product:"whatsapp",
+                            to:from,
+                            text:{
+                                body:"ones"
+                            }
+                        },
+                        headers:{
+                            "Content-Type":"application/json"
+                        }
+     
+                    });
+                }).catch((err)=>{
+                    console.log(err);
+                });
+               
+            //    let val= parseFloat(msg_body);
+            //    let result=parseInt(bot.model.predict(tf.tensor2d([val], [1, 1])).dataSync());
+            //    result = result.toString();
                console.log("phone number "+phon_no_id);
                console.log("from "+from);
                console.log("boady param "+msg_body);
 
-               axios({
-                   method:"POST",
-                   url:"https://graph.facebook.com/v13.0/"+phon_no_id+"/messages?access_token="+token,
-                   data:{
-                       messaging_product:"whatsapp",
-                       to:from,
-                       text:{
-                           body:result
-                       }
-                   },
-                   headers:{
-                       "Content-Type":"application/json"
-                   }
-
-               });
+               
 
                res.sendStatus(200);
             }else{
