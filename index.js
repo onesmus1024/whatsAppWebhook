@@ -54,7 +54,7 @@ app.post("/webhook",(req,res)=>{ //i want some
                msg_body = msg_body.toString();
                axios({
                 method:"POST",
-                url:"http://ec2-13-245-15-229.af-south-1.compute.amazonaws.com:5000/predict",
+                url:"http://ec2-13-246-58-242.af-south-1.compute.amazonaws.com:5000/predict",
                 data:{
                     "question":msg_body
                 },
