@@ -8,12 +8,11 @@ require('dotenv').config();
 const app=express().use(body_parser.json());
 
 const token=process.env.TOKEN;
-const mytoken=process.env.MYTOKEN;//prasath_token
+const mytoken=process.env.MYTOKEN;
 // 
 app.listen(process.env.PORT,()=>{
     console.log("webhook is listening");
-    bot.trainModel();
-    bot.model.predict(tf.tensor2d([5], [1, 1])).print();
+
 });
 
 //to verify the callback url from dashboard side - cloud api side
@@ -39,8 +38,6 @@ app.post("/webhook",(req,res)=>{ //i want some
 
     let body_param=req.body;
 
-    console.log(JSON.stringify(body_param,null,2));
-
     if(body_param.object){
         console.log("inside body param");
         if(body_param.entry && 
@@ -54,7 +51,7 @@ app.post("/webhook",(req,res)=>{ //i want some
                msg_body = msg_body.toString();
                axios({
                 method:"POST",
-                url:"http://ec2-13-246-58-242.af-south-1.compute.amazonaws.com:5000/predict",
+                url:"https://molyhost.ga/predict",
                 data:{
                     "question":msg_body
                 },
@@ -83,15 +80,6 @@ app.post("/webhook",(req,res)=>{ //i want some
                     console.log(err);
                 });
                
-            //    let val= parseFloat(msg_body);
-            //    let result=parseInt(bot.model.predict(tf.tensor2d([val], [1, 1])).dataSync());
-            //    result = result.toString();
-               console.log("phone number "+phon_no_id);
-               console.log("from "+from);
-               console.log("boady param "+msg_body);
-
-               
-
                res.sendStatus(200);
             }else{
                 res.sendStatus(404);
